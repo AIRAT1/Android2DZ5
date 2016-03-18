@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String EXTRA = "extra";
@@ -78,17 +79,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         pendingIntent);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            TimeUnit.SECONDS.sleep(60);
+                            stopMusic();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
                 break;
             case R.id.alarmOff:
-                alarmManager.cancel(pendingIntent);
+                stopMusic();
                 setAlarmText("Alarm off!");
-                alarmIntent.putExtra(EXTRA, ALARM_OFF);
-                // stop ringtone
-                sendBroadcast(alarmIntent);
                 break;
             default:
                 break;
         }
+    }
+
+    private void stopMusic() {
+        alarmManager.cancel(pendingIntent);
+        alarmIntent.putExtra(EXTRA, ALARM_OFF);
+        sendBroadcast(alarmIntent);
     }
 
     private void setAlarmText(String s) {

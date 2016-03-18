@@ -30,6 +30,7 @@ public class RingtonePlayingService extends Service {
         // music off and user pressed on
         if (!this.isRunning && startId == 1) {
             mediaPlayer = MediaPlayer.create(this, R.raw.violin_stirling);
+            mediaPlayer.setLooping(true);
             mediaPlayer.start();
             this.isRunning = true;
             this.startId = 0;
