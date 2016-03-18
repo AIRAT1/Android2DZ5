@@ -17,6 +17,9 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    public static final String EXTRA = "extra";
+    public static final String ALARM_ON = "alarm on";
+    public static final String ALARM_OFF = "alarm off";
     private AlarmManager alarmManager;
     private TimePicker alarmTimePicker;
     private TextView updateText;
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (hour > 12) hourString = String.valueOf(hour - 12);
                 if (minute < 10) minuteString = "0" + String.valueOf(minute);
                 setAlarmText("Alarm set to: " + hourString + ":" + minuteString);
+                alarmIntent.putExtra(EXTRA, ALARM_ON);
                 pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
                         alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
@@ -78,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.alarmOff:
                 alarmManager.cancel(pendingIntent);
                 setAlarmText("Alarm off!");
+                alarmIntent.putExtra(EXTRA, ALARM_OFF);
+                // stop ringtone
+                sendBroadcast(alarmIntent);
                 break;
             default:
                 break;

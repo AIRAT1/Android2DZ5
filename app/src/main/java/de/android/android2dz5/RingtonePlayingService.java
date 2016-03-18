@@ -8,14 +8,33 @@ import android.util.Log;
 
 public class RingtonePlayingService extends Service {
     private MediaPlayer mediaPlayer;
+    private int startID;
     public RingtonePlayingService() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String getExtraString = intent.getExtras().getString(MainActivity.EXTRA);
+        assert getExtraString != null;
+        switch (getExtraString) {
+            case MainActivity.ALARM_ON:
+                startId = 1;
+                break;
+            case MainActivity.ALARM_OFF:
+                startId = 0;
+                break;
+            default:
+                startId = 0;
+                break;
+        }
         mediaPlayer = MediaPlayer.create(this, R.raw.violin_stirling);
-        mediaPlayer.start();
         Log.d("LOG", "onStartCommand");
+        mediaPlayer.start();
+
+
+
+
+
         return START_NOT_STICKY;
     }
 
