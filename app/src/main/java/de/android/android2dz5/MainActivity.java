@@ -1,7 +1,9 @@
 package de.android.android2dz5;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TimePicker alarmTimePicker;
     private TextView updateText;
     private Context context;
+    private PendingIntent pendingIntent;
+    private Intent alarmIntent;
     private final Calendar calendar = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,36 +31,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.context = this;
-        // init alarm manager
         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        // init time picker
         alarmTimePicker = (TimePicker)findViewById(R.id.timePicker);
-        // init update text
         updateText = (TextView)findViewById(R.id.updateText);
-        // init start button
+        alarmIntent = new Intent(this.context, AlarmReceiver.class);
         Button alarmOn = (Button)findViewById(R.id.alarmOn);
-        // init stop button
         Button alarmOff = (Button)findViewById(R.id.alarmOff);
-        // create onClickListeners for a buttons
         alarmOn.setOnClickListener(this);
         alarmOff.setOnClickListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -77,8 +70,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (hour > 12) hourString = String.valueOf(hour - 12);
                 if (minute < 10) minuteString = "0" + String.valueOf(minute);
                 setAlarmText("Alarm set to: " + hourString + ":" + minuteString);
+                pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
+                        alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        pendingIntent);
                 break;
             case R.id.alarmOff:
+                alarmManager.cancel(pendingIntent);
                 setAlarmText("Alarm off!");
                 break;
             default:
