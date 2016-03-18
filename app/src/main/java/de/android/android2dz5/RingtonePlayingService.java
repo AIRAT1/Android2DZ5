@@ -1,5 +1,8 @@
 package de.android.android2dz5;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -15,6 +18,7 @@ public class RingtonePlayingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String getExtraString = intent.getExtras().getString(MainActivity.EXTRA);
+
         assert getExtraString != null;
         switch (getExtraString) {
             case MainActivity.ALARM_ON:
@@ -27,13 +31,26 @@ public class RingtonePlayingService extends Service {
                 startId = 0;
                 break;
         }
-        // music off and user pressed on
+        // music off and user press on
         if (!this.isRunning && startId == 1) {
             mediaPlayer = MediaPlayer.create(this, R.raw.violin_stirling);
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
             this.isRunning = true;
             this.startId = 0;
+
+            NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            Intent mainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Notification notification = new Notification.Builder(this)
+                    .setContentTitle("An alarm is going off!")
+                    .setContentText("Click me!")
+                    .setSmallIcon(android.R.drawable.btn_radio)
+                    .setAutoCancel(true)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(pendingIntent)
+                    .build();
+            notificationManager.notify(0, notification);
         }
         // music on and user press off
         else if (this.isRunning && startId == 0) {
