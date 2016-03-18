@@ -12,8 +12,43 @@
     tools:context="de.android.android2dz5.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Turn alarm on"
+        android:clickable="true"
+        android:id="@+id/alarmOn"
+        android:layout_below="@+id/timePicker"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Turn alarm off"
+        android:clickable="true"
+        android:id="@+id/alarmOff"
+        android:layout_alignTop="@+id/alarmOn"
+        android:layout_below="@id/timePicker"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Did you set the alarm?"
+        android:id="@+id/updateText"
+        android:layout_below="@+id/alarmOff"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
 </RelativeLayout>

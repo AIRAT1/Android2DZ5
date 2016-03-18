@@ -1,31 +1,45 @@
 package de.android.android2dz5;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Calendar;
 
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private AlarmManager alarmManager;
+    private TimePicker alarmTimePicker;
+    private TextView updateText;
+    private Context context;
+    private final Calendar calendar = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        this.context = this;
+        // init alarm manager
+        alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        // init time picker
+        alarmTimePicker = (TimePicker)findViewById(R.id.timePicker);
+        // init update text
+        updateText = (TextView)findViewById(R.id.updateText);
+        // init start button
+        Button alarmOn = (Button)findViewById(R.id.alarmOn);
+        // init stop button
+        Button alarmOff = (Button)findViewById(R.id.alarmOff);
+        // create onClickListeners for a buttons
+        alarmOn.setOnClickListener(this);
+        alarmOff.setOnClickListener(this);
     }
 
     @Override
@@ -48,5 +62,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.alarmOn:
+                int hour = alarmTimePicker.getCurrentHour();
+                int minute = alarmTimePicker.getCurrentMinute();
+                calendar.set(Calendar.HOUR_OF_DAY, hour);
+                calendar.set(Calendar.MINUTE, minute);
+                String hourString = String.valueOf(hour);
+                String minuteString = String.valueOf(minute);
+                if (hour > 12) hourString = String.valueOf(hour - 12);
+                if (minute < 10) minuteString = "0" + String.valueOf(minute);
+                setAlarmText("Alarm set to: " + hourString + ":" + minuteString);
+                break;
+            case R.id.alarmOff:
+                setAlarmText("Alarm off!");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setAlarmText(String s) {
+        updateText.setText(s);
     }
 }
