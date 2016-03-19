@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final Calendar calendar = Calendar.getInstance();
     private String hourString = "";
     private String minuteString = "";
+    static Thread thread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.context = this;
         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmTimePicker = (TimePicker)findViewById(R.id.timePicker);
+        alarmTimePicker.setIs24HourView(true);
         updateText = (TextView)findViewById(R.id.updateText);
         alarmIntent = new Intent(this.context, AlarmReceiver.class);
         Button alarmOn = (Button)findViewById(R.id.alarmOn);
@@ -82,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         pendingIntent);
                 updateNewAppWidget(this);
-                new Thread(new Runnable() {
+
+                thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -92,7 +95,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             e.printStackTrace();
                         }
                     }
-                }).start();
+                });
+
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            TimeUnit.SECONDS.sleep(60);
+//                            stopMusic();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }).start();
+
                 break;
             case R.id.alarmOff:
                 stopMusic();

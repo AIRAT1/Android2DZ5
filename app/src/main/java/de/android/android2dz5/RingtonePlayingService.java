@@ -38,6 +38,7 @@ public class RingtonePlayingService extends Service {
             mediaPlayer.start();
             this.isRunning = true;
             this.startId = 0;
+            MainActivity.thread.start();
 
             NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
             Intent mainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
