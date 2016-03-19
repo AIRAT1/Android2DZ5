@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.context = this;
         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmTimePicker = (TimePicker)findViewById(R.id.timePicker);
-        alarmTimePicker.setIs24HourView(true);
+//        alarmTimePicker.setIs24HourView(true);
         updateText = (TextView)findViewById(R.id.updateText);
         alarmIntent = new Intent(this.context, AlarmReceiver.class);
         Button alarmOn = (Button)findViewById(R.id.alarmOn);
