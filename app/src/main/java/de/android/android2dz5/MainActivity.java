@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PendingIntent pendingIntent;
     private Intent alarmIntent;
     private final Calendar calendar = Calendar.getInstance();
+    private String hourString = "";
+    private String minuteString = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int minute = alarmTimePicker.getCurrentMinute();
                 calendar.set(Calendar.HOUR_OF_DAY, hour);
                 calendar.set(Calendar.MINUTE, minute);
-                String hourString = String.valueOf(hour);
-                String minuteString = String.valueOf(minute);
+                hourString = String.valueOf(hour);
+                minuteString = String.valueOf(minute);
                 if (hour > 12) hourString = String.valueOf(hour - 12);
                 if (minute < 10) minuteString = "0" + String.valueOf(minute);
                 setAlarmText("Alarm set to: " + hourString + ":" + minuteString);
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         pendingIntent);
+                updateNewAppWidget(this);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -98,6 +101,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    private void updateNewAppWidget(Context context) {
+        Intent newAppWidgetIntent = new Intent(context, NewAppWidget.class);
+        newAppWidgetIntent.putExtra("hour", hourString);
+        newAppWidgetIntent.putExtra("minute", minuteString);
+        context.sendBroadcast(newAppWidgetIntent);
     }
 
     private void stopMusic() {
