@@ -97,18 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
 
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            TimeUnit.SECONDS.sleep(60);
-//                            stopMusic();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }).start();
-
                 break;
             case R.id.alarmOff:
                 stopMusic();
