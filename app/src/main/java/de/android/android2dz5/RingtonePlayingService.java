@@ -13,12 +13,14 @@ public class RingtonePlayingService extends Service {
     private MediaPlayer mediaPlayer;
     private int startId;
     private boolean isRunning;
+    private int resId;
     public RingtonePlayingService() {
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String getExtraString = intent.getExtras().getString(MainActivity.EXTRA);
+        int getYourWhaleChoice = intent.getExtras().getInt(MainActivity.WHALE_CHOICE);
 
         assert getExtraString != null;
         switch (getExtraString) {
@@ -34,7 +36,23 @@ public class RingtonePlayingService extends Service {
         }
         // music off and user press on
         if (!this.isRunning && startId == 1) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.violin_stirling);
+            switch (getYourWhaleChoice) {
+                case 0:
+                    resId = R.raw.crystallize;
+                    break;
+                case 1:
+                    resId = R.raw.roundtable_rival;
+                    break;
+                case 2:
+                    resId = R.raw.violin_stirling;
+                    break;
+                case 3:
+                    resId = R.raw.zelda_medley;
+                    break;
+                default:
+                    resId = R.raw.crystallize;
+            }
+            mediaPlayer = MediaPlayer.create(this, resId);
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
             this.isRunning = true;
@@ -60,6 +78,7 @@ public class RingtonePlayingService extends Service {
             mediaPlayer.reset();
             this.isRunning = false;
             this.startId = 0;
+            MainActivity.thread.interrupt();
             stopSelf();
         }
         // music off and user press off
