@@ -26,15 +26,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String ALARM_ON = "alarm on";
     public static final String ALARM_OFF = "alarm off";
     public static final String WHALE_CHOICE = "whale_choice";
+    public static final int ONE_MINUTE = 60000; // milliseconds in 1 minute
     private AlarmManager alarmManager;
     private TimePicker alarmTimePicker;
-    private TextView updateText;
+    private Button alarmOn, alarmOff;
+    private TextView updateText, songText;
     private Context context;
     private PendingIntent pendingIntent;
     private Intent alarmIntent;
     private final Calendar calendar = Calendar.getInstance();
     private String hourString = "";
     private String minuteString = "";
+    private String songString = "";
     static Thread thread;
     private int choose_whale_sound;
 
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmTimePicker = (TimePicker)findViewById(R.id.timePicker);
 //        alarmTimePicker.setIs24HourView(true);
         updateText = (TextView)findViewById(R.id.updateText);
+        songText = (TextView)findViewById(R.id.songText);
         alarmIntent = new Intent(this.context, AlarmReceiver.class);
 
         // create spinner
@@ -67,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set on onClickListener to the onItemSelected method
         spinner.setOnItemSelectedListener(this);
 
-        Button alarmOn = (Button)findViewById(R.id.alarmOn);
-        Button alarmOff = (Button)findViewById(R.id.alarmOff);
+        alarmOn = (Button)findViewById(R.id.alarmOn);
+        alarmOff = (Button)findViewById(R.id.alarmOff);
         alarmOn.setOnClickListener(this);
         alarmOff.setOnClickListener(this);
     }
@@ -93,20 +97,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.alarmOn:
+                alarmOn.setEnabled(false);
                 int hour = alarmTimePicker.getCurrentHour();
                 int minute = alarmTimePicker.getCurrentMinute();
                 calendar.set(Calendar.HOUR_OF_DAY, hour);
                 calendar.set(Calendar.MINUTE, minute);
+
+                // to fix alarm time for tomorrow
+                long _alarm = 0;
+                if (calendar.getTimeInMillis() < System.currentTimeMillis() - ONE_MINUTE) {
+                    _alarm = calendar.getTimeInMillis() + (AlarmManager.INTERVAL_DAY + 1);
+                }else {
+                    _alarm = calendar.getTimeInMillis();
+                }
+
                 hourString = String.valueOf(hour);
                 minuteString = String.valueOf(minute);
                 if (hour > 12) hourString = String.valueOf(hour - 12);
                 if (minute < 10) minuteString = "0" + String.valueOf(minute);
                 setAlarmText("Alarm set to: " + hourString + ":" + minuteString);
+                songText.setText("Current melodie is: " + songString);
                 alarmIntent.putExtra(EXTRA, ALARM_ON);
                 alarmIntent.putExtra(WHALE_CHOICE, choose_whale_sound);
                 pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
                         alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                alarmManager.set(AlarmManager.RTC_WAKEUP, _alarm,
                         pendingIntent);
                 updateNewAppWidget(this);
 
@@ -124,8 +139,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.alarmOff:
+                alarmOn.setEnabled(true);
                 stopMusic();
                 setAlarmText("Alarm off!");
+                songText.setText("Current melodie is: ");
                 break;
             default:
                 break;
@@ -153,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         choose_whale_sound = (int) id;
+        String[] choose = getResources().getStringArray(R.array.whale_array);
+        songString = choose[position];
     }
 
     @Override
