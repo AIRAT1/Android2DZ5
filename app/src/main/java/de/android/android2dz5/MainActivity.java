@@ -11,14 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     public static final String EXTRA = "extra";
     public static final String ALARM_ON = "alarm on";
     public static final String ALARM_OFF = "alarm off";
@@ -51,6 +54,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        alarmTimePicker.setIs24HourView(true);
         updateText = (TextView)findViewById(R.id.updateText);
         alarmIntent = new Intent(this.context, AlarmReceiver.class);
+
+        // create spinner
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.whale_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         Button alarmOn = (Button)findViewById(R.id.alarmOn);
         Button alarmOff = (Button)findViewById(R.id.alarmOff);
         alarmOn.setOnClickListener(this);
@@ -130,5 +141,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setAlarmText(String s) {
         updateText.setText(s);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

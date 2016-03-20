@@ -3,4 +3,10 @@
     <string name="action_settings">Settings</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string-array name="whale_array">
+        <item>crystallize</item>
+        <item>roundtable_rival</item>
+        <item>violin_stirling</item>
+        <item>zelda_medley</item>
+    </string-array>
 </resources>

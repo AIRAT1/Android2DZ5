@@ -24,9 +24,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="SET ALARM"
+        android:layout_marginTop="20dp"
         android:clickable="true"
         android:id="@+id/alarmOn"
-        android:layout_below="@+id/timePicker"
+        android:layout_below="@+id/updateText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -38,7 +39,7 @@
         android:clickable="true"
         android:id="@+id/alarmOff"
         android:layout_alignTop="@+id/alarmOn"
-        android:layout_below="@id/timePicker"
+        android:layout_below="@id/updateText"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -47,8 +48,17 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Did you set the alarm?"
+        android:layout_marginTop="20dp"
         android:id="@+id/updateText"
-        android:layout_below="@+id/alarmOff"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        android:layout_below="@+id/timePicker"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/alarmOn"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
