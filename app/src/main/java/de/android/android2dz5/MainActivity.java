@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 alarmIntent.putExtra(EXTRA, ALARM_ON);
                 alarmIntent.putExtra(WHALE_CHOICE, choose_whale_sound);
                 pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
-                        alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, _alarm,
                         pendingIntent);
                 updateNewAppWidget(this);
