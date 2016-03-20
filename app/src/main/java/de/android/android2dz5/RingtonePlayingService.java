@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.util.Log;
 
 public class RingtonePlayingService extends Service {
     private MediaPlayer mediaPlayer;
@@ -59,6 +60,7 @@ public class RingtonePlayingService extends Service {
             mediaPlayer.reset();
             this.isRunning = false;
             this.startId = 0;
+            stopSelf();
         }
         // music off and user press off
         else if (!this.isRunning && startId == 0) {
@@ -85,6 +87,7 @@ public class RingtonePlayingService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.d("LOG", "service onDestroy");
         super.onDestroy();
     }
 }
