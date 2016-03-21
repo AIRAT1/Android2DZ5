@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Будильник</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="appwidget_text" translatable="false">EXAMPLE</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="unset">Выкл.</string>
+    <string name="set">Вкл.</string>
+    <string name="current_melodie_is">Установлена мелодия:</string>
+    <string name="alarm_off">Будильник выключен!</string>
+    <string name="alarm_set_to">"Будильник установлен на: "</string>
+    <string name="did_you_set_alarm">Хотите установить буильник?</string>
+    <string-array name="whale_array">
+        <item>crystallize</item>
+        <item>roundtable_rival</item>
+        <item>violin_stirling</item>
+        <item>zelda_medley</item>
+    </string-array>
+</resources>

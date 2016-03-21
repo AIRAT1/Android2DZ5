@@ -53,11 +53,11 @@ public class RingtonePlayingService extends Service {
                     resId = R.raw.crystallize;
             }
             mediaPlayer = MediaPlayer.create(this, resId);
-            mediaPlayer.setLooping(true);
+//            mediaPlayer.setLooping(true);
             mediaPlayer.start();
             this.isRunning = true;
             this.startId = 0;
-            MainActivity.thread.start();
+//            MainActivity.thread.start();
 
             NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
             Intent mainActivityIntent = new Intent(this.getApplicationContext(), MainActivity.class);
@@ -78,7 +78,7 @@ public class RingtonePlayingService extends Service {
             mediaPlayer.reset();
             this.isRunning = false;
             this.startId = 0;
-            MainActivity.thread.interrupt();
+//            MainActivity.thread.interrupt();
             stopSelf();
         }
         // music off and user press off

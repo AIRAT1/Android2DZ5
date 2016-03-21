@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     public static final String EXTRA = "extra";
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String hourString = "";
     private String minuteString = "";
     private String songString = "";
-    static Thread thread;
+//    static Thread thread;
     private int choose_whale_sound;
 
     @Override
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.context = this;
         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarmTimePicker = (TimePicker)findViewById(R.id.timePicker);
-//        alarmTimePicker.setIs24HourView(true);
+        alarmTimePicker.setIs24HourView(true);
         updateText = (TextView)findViewById(R.id.updateText);
         songText = (TextView)findViewById(R.id.songText);
         alarmIntent = new Intent(this.context, AlarmReceiver.class);
@@ -115,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 minuteString = String.valueOf(minute);
                 if (hour > 12) hourString = String.valueOf(hour - 12);
                 if (minute < 10) minuteString = "0" + String.valueOf(minute);
-                setAlarmText("Alarm set to: " + hourString + ":" + minuteString);
-                songText.setText("Current melodie is: " + songString);
+                setAlarmText(getString(R.string.alarm_set_to) + hourString + ":" + minuteString);
+                songText.setText(getString(R.string.current_melodie_is) + " " + songString);
                 alarmIntent.putExtra(EXTRA, ALARM_ON);
                 alarmIntent.putExtra(WHALE_CHOICE, choose_whale_sound);
                 pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
@@ -125,24 +124,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         pendingIntent);
                 updateNewAppWidget(this);
 
-                thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            TimeUnit.SECONDS.sleep(60);
-                            stopMusic();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+//                thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        try {
+//                            TimeUnit.SECONDS.sleep(60);
+//                            stopMusic();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
 
                 break;
             case R.id.alarmOff:
                 alarmOn.setEnabled(true);
                 stopMusic();
-                setAlarmText("Alarm off!");
-                songText.setText("Current melodie is: ");
+                setAlarmText(getString(R.string.alarm_off));
+                songText.setText(getString(R.string.current_melodie_is));
                 break;
             default:
                 break;

@@ -13,7 +13,7 @@
     tools:showIn="@layout/activity_main">
 
     <TimePicker
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"
         android:layout_alignParentTop="true"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="SET ALARM"
+        android:text="@string/set"
         android:clickable="true"
         android:id="@+id/alarmOn"
         android:layout_below="@+id/songText"
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="UNSET ALARM"
+        android:text="@string/unset"
         android:clickable="true"
         android:id="@+id/alarmOff"
         android:layout_alignTop="@+id/alarmOn"
@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Did you set the alarm?"
+        android:text="@string/did_you_set_alarm"
         android:id="@+id/updateText"
         android:layout_below="@+id/timePicker"
         android:layout_centerHorizontal="true" />
@@ -55,7 +55,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/songText"
         android:layout_centerHorizontal="true"
-        android:text="Current melodie is: "
+        android:text="@string/current_melodie_is"
         android:layout_below="@id/updateText"
         />
 
